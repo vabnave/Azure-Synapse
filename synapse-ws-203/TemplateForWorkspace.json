@@ -420,6 +420,7 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
+									"wildcardFileName": "*json",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -437,54 +438,6 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "$['CustomerID']"
-										},
-										"sink": {
-											"name": "CustomerID"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Title']"
-										},
-										"sink": {
-											"name": "Title"
-										}
-									},
-									{
-										"source": {
-											"path": "$['FirstName']"
-										},
-										"sink": {
-											"name": "FirstName"
-										}
-									},
-									{
-										"source": {
-											"path": "$['MiddleName']"
-										},
-										"sink": {
-											"name": "MiddleName"
-										}
-									},
-									{
-										"source": {
-											"path": "$['LastName']"
-										},
-										"sink": {
-											"name": "LastName"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Suffix']"
-										},
-										"sink": {
-											"name": "Suffix"
-										}
-									},
-									{
-										"source": {
 											"path": "$['CompanyName']"
 										},
 										"sink": {
@@ -493,10 +446,10 @@
 									},
 									{
 										"source": {
-											"path": "$['SalesPerson']"
+											"path": "$['CustomerID']"
 										},
 										"sink": {
-											"name": "SalesPerson"
+											"name": "CustomerID"
 										}
 									},
 									{
@@ -509,10 +462,18 @@
 									},
 									{
 										"source": {
-											"path": "$['Phone']"
+											"path": "$['FirstName']"
 										},
 										"sink": {
-											"name": "Phone"
+											"name": "FirstName"
+										}
+									},
+									{
+										"source": {
+											"path": "$['HashKey']"
+										},
+										"sink": {
+											"name": "HashKey"
 										}
 									},
 									{
@@ -525,6 +486,22 @@
 									},
 									{
 										"source": {
+											"path": "$['LastName']"
+										},
+										"sink": {
+											"name": "LastName"
+										}
+									},
+									{
+										"source": {
+											"path": "$['MiddleName']"
+										},
+										"sink": {
+											"name": "MiddleName"
+										}
+									},
+									{
+										"source": {
 											"path": "$['ModifiedDate']"
 										},
 										"sink": {
@@ -533,10 +510,50 @@
 									},
 									{
 										"source": {
-											"path": "$['HashKey']"
+											"path": "$['Phone']"
 										},
 										"sink": {
-											"name": "HashKey"
+											"name": "Phone"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SalesPerson']"
+										},
+										"sink": {
+											"name": "SalesPerson"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Suffix']"
+										},
+										"sink": {
+											"name": "Suffix"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Title']"
+										},
+										"sink": {
+											"name": "Title"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Full Name']"
+										},
+										"sink": {
+											"name": "Full Name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Customer Since']"
+										},
+										"sink": {
+											"name": "Customer Since"
 										}
 									}
 								]
@@ -544,7 +561,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "ADL_Customer_Store",
+								"referenceName": "ADL_temp_customer_profile",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -564,6 +581,7 @@
 				"[concat(variables('workspaceId'), '/datasets/CustomerSQLSource')]",
 				"[concat(variables('workspaceId'), '/datasets/ADL_Customer_Store')]",
 				"[concat(variables('workspaceId'), '/notebooks/Customer Data Transform')]",
+				"[concat(variables('workspaceId'), '/datasets/ADL_temp_customer_profile')]",
 				"[concat(variables('workspaceId'), '/datasets/AzureSynapseDW')]"
 			]
 		},
@@ -1511,10 +1529,10 @@
 							"collapsed": true
 						},
 						"source": [
-							"df.write.mode('overwrite').format('json').save('abfss://adlsynapsecontainer@adlstoragesynapse203.dfs.core.windows.net/synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile/')"
+							"df1.write.mode('overwrite').format('json').save('abfss://adlsynapsecontainer@adlstoragesynapse203.dfs.core.windows.net/synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile/')"
 						],
 						"outputs": [],
-						"execution_count": 5
+						"execution_count": 6
 					}
 				]
 			},
@@ -1532,6 +1550,74 @@
 			},
 			"dependsOn": [],
 			"location": "norwayeast"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADL_temp_customer_profile')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "part-00000-c0cc786f-7adc-4f77-8746-570b5cb77bd8-c000.json",
+						"folderPath": "synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile",
+						"fileSystem": "adlsynapsecontainer"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CompanyName": {
+							"type": "string"
+						},
+						"CustomerID": {
+							"type": "integer"
+						},
+						"EmailAddress": {
+							"type": "string"
+						},
+						"FirstName": {
+							"type": "string"
+						},
+						"HashKey": {
+							"type": "string"
+						},
+						"InsertedDate": {
+							"type": "string"
+						},
+						"LastName": {
+							"type": "string"
+						},
+						"MiddleName": {
+							"type": "string"
+						},
+						"ModifiedDate": {
+							"type": "string"
+						},
+						"Phone": {
+							"type": "string"
+						},
+						"SalesPerson": {
+							"type": "string"
+						},
+						"Title": {
+							"type": "string"
+						},
+						"Suffix": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureSynapseDataLake')]"
+			]
 		}
 	]
 }
