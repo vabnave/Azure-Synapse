@@ -1,0 +1,212 @@
+{
+	"name": "ELTL_Example",
+	"properties": {
+		"activities": [
+			{
+				"name": "Check if source db exist",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "CustomerSQLSource",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Move data to ADLS Stage",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Check if source db exist",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "dbo.DimCustomer"
+					},
+					{
+						"name": "Destination",
+						"value": "adlsynapsecontainer/synapse/workspaces/synapse-ws-203/Stage/Customer Profile/Customer Profile"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "Int32"
+								},
+								"sink": {
+									"path": "$['CustomerID']"
+								}
+							},
+							{
+								"source": {
+									"name": "Title",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Title']"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['FirstName']"
+								}
+							},
+							{
+								"source": {
+									"name": "MiddleName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MiddleName']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LastName']"
+								}
+							},
+							{
+								"source": {
+									"name": "Suffix",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Suffix']"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CompanyName']"
+								}
+							},
+							{
+								"source": {
+									"name": "SalesPerson",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['SalesPerson']"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailAddress",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['EmailAddress']"
+								}
+							},
+							{
+								"source": {
+									"name": "Phone",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Phone']"
+								}
+							},
+							{
+								"source": {
+									"name": "InsertedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['InsertedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "ModifiedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['ModifiedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "HashKey",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['HashKey']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CustomerSQLSource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ADL_Customer_Store",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

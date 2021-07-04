@@ -1,0 +1,20 @@
+{
+	"name": "ADL_Customer_Store",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Customer Profile",
+				"folderPath": "synapse/workspaces/synapse-ws-203/Stage/Customer Profile",
+				"fileSystem": "adlsynapsecontainer"
+			}
+		},
+		"schema": {}
+	}
+}
