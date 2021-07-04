@@ -1,0 +1,16 @@
+{
+	"name": "AzureSynapseDW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "synapse-ws-203-WorkspaceDefaultSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CustomerProfile"
+		}
+	}
+}
