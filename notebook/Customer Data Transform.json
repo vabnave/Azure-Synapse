@@ -149,7 +149,7 @@
 					"collapsed": true
 				},
 				"source": [
-					""
+					"df.write.mode('overwrite').format('json').save('abfss://adlsynapsecontainer@adlstoragesynapse203.dfs.core.windows.net/synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile/')"
 				],
 				"execution_count": 100
 			}
