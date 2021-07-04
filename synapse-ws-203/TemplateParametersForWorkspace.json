@@ -5,6 +5,12 @@
 		"workspaceName": {
 			"value": "synapse-ws-203"
 		},
+		"AzureSqlCustomerDatabase_connectionString": {
+			"value": ""
+		},
+		"AzureSynapseDataLake_accountKey": {
+			"value": ""
+		},
 		"CustomerProfileCosmosDb_connectionString": {
 			"value": ""
 		},
@@ -14,16 +20,10 @@
 		"synapse-ws-203-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
-		"AzureSqlCustomerDatabase_connectionString": {
-			"value": ""
-		},
-		"AzureSynapseDataLake_accountKey": {
-			"value": ""
-		},
-		"synapse-ws-203-WorkspaceDefaultStorage_properties_typeProperties_url": {
+		"AzureSynapseDataLake_properties_typeProperties_url": {
 			"value": "https://adlstoragesynapse203.dfs.core.windows.net"
 		},
-		"AzureSynapseDataLake_properties_typeProperties_url": {
+		"synapse-ws-203-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://adlstoragesynapse203.dfs.core.windows.net"
 		}
 	}
