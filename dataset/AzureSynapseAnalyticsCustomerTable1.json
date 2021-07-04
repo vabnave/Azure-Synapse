@@ -1,0 +1,20 @@
+{
+	"name": "AzureSynapseAnalyticsCustomerTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "synapse-ws-203-WorkspaceDefaultSqlServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "SQLPool01"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "customer"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

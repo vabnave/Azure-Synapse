@@ -1,0 +1,16 @@
+{
+	"name": "CustomerProfileCDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CustomerProfileCosmosDb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {},
+		"typeProperties": {
+			"collectionName": "OnlineCustomerProfile"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
