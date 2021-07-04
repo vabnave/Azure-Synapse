@@ -265,9 +265,120 @@
 						}
 					},
 					"sink": {
-						"type": "SqlDWSink"
+						"type": "SqlDWSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CustomerID']"
+								},
+								"sink": {
+									"name": "CustomerID"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Title']"
+								},
+								"sink": {
+									"name": "Title"
+								}
+							},
+							{
+								"source": {
+									"path": "$['FirstName']"
+								},
+								"sink": {
+									"name": "FirstName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MiddleName']"
+								},
+								"sink": {
+									"name": "MiddleName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LastName']"
+								},
+								"sink": {
+									"name": "LastName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Suffix']"
+								},
+								"sink": {
+									"name": "Suffix"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CompanyName']"
+								},
+								"sink": {
+									"name": "CompanyName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesPerson']"
+								},
+								"sink": {
+									"name": "SalesPerson"
+								}
+							},
+							{
+								"source": {
+									"path": "$['EmailAddress']"
+								},
+								"sink": {
+									"name": "EmailAddress"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Phone']"
+								},
+								"sink": {
+									"name": "Phone"
+								}
+							},
+							{
+								"source": {
+									"path": "$['InsertedDate']"
+								},
+								"sink": {
+									"name": "InsertedDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ModifiedDate']"
+								},
+								"sink": {
+									"name": "ModifiedDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['HashKey']"
+								},
+								"sink": {
+									"name": "HashKey"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
