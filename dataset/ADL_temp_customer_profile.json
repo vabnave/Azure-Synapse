@@ -1,0 +1,63 @@
+{
+	"name": "ADL_temp_customer_profile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "part-00000-c0cc786f-7adc-4f77-8746-570b5cb77bd8-c000.json",
+				"folderPath": "synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile",
+				"fileSystem": "adlsynapsecontainer"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"CompanyName": {
+					"type": "string"
+				},
+				"CustomerID": {
+					"type": "integer"
+				},
+				"EmailAddress": {
+					"type": "string"
+				},
+				"FirstName": {
+					"type": "string"
+				},
+				"HashKey": {
+					"type": "string"
+				},
+				"InsertedDate": {
+					"type": "string"
+				},
+				"LastName": {
+					"type": "string"
+				},
+				"MiddleName": {
+					"type": "string"
+				},
+				"ModifiedDate": {
+					"type": "string"
+				},
+				"Phone": {
+					"type": "string"
+				},
+				"SalesPerson": {
+					"type": "string"
+				},
+				"Title": {
+					"type": "string"
+				},
+				"Suffix": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

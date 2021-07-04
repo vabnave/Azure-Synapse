@@ -258,6 +258,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFileName": "*json",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -275,54 +276,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['CustomerID']"
-								},
-								"sink": {
-									"name": "CustomerID"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Title']"
-								},
-								"sink": {
-									"name": "Title"
-								}
-							},
-							{
-								"source": {
-									"path": "$['FirstName']"
-								},
-								"sink": {
-									"name": "FirstName"
-								}
-							},
-							{
-								"source": {
-									"path": "$['MiddleName']"
-								},
-								"sink": {
-									"name": "MiddleName"
-								}
-							},
-							{
-								"source": {
-									"path": "$['LastName']"
-								},
-								"sink": {
-									"name": "LastName"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Suffix']"
-								},
-								"sink": {
-									"name": "Suffix"
-								}
-							},
-							{
-								"source": {
 									"path": "$['CompanyName']"
 								},
 								"sink": {
@@ -331,10 +284,10 @@
 							},
 							{
 								"source": {
-									"path": "$['SalesPerson']"
+									"path": "$['CustomerID']"
 								},
 								"sink": {
-									"name": "SalesPerson"
+									"name": "CustomerID"
 								}
 							},
 							{
@@ -347,10 +300,18 @@
 							},
 							{
 								"source": {
-									"path": "$['Phone']"
+									"path": "$['FirstName']"
 								},
 								"sink": {
-									"name": "Phone"
+									"name": "FirstName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['HashKey']"
+								},
+								"sink": {
+									"name": "HashKey"
 								}
 							},
 							{
@@ -363,6 +324,22 @@
 							},
 							{
 								"source": {
+									"path": "$['LastName']"
+								},
+								"sink": {
+									"name": "LastName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MiddleName']"
+								},
+								"sink": {
+									"name": "MiddleName"
+								}
+							},
+							{
+								"source": {
 									"path": "$['ModifiedDate']"
 								},
 								"sink": {
@@ -371,10 +348,50 @@
 							},
 							{
 								"source": {
-									"path": "$['HashKey']"
+									"path": "$['Phone']"
 								},
 								"sink": {
-									"name": "HashKey"
+									"name": "Phone"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SalesPerson']"
+								},
+								"sink": {
+									"name": "SalesPerson"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Suffix']"
+								},
+								"sink": {
+									"name": "Suffix"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Title']"
+								},
+								"sink": {
+									"name": "Title"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Full Name']"
+								},
+								"sink": {
+									"name": "Full Name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Customer Since']"
+								},
+								"sink": {
+									"name": "Customer Since"
 								}
 							}
 						]
@@ -382,7 +399,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ADL_Customer_Store",
+						"referenceName": "ADL_temp_customer_profile",
 						"type": "DatasetReference"
 					}
 				],
