@@ -392,7 +392,7 @@
 									"path": "$['Full Name']"
 								},
 								"sink": {
-									"name": "Full Name"
+									"name": "FullName"
 								}
 							},
 							{
@@ -400,7 +400,7 @@
 									"path": "$['Customer Since']"
 								},
 								"sink": {
-									"name": "Customer Since"
+									"name": "CustomerSince"
 								}
 							}
 						]
