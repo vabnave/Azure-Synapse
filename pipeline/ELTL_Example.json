@@ -251,7 +251,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "adlsynapsecontainer/synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile/part-00000-c0cc786f-7adc-4f77-8746-570b5cb77bd8-c000.json"
+					},
+					{
+						"name": "Destination",
+						"value": "dbo.CustomerProfileDW"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "JsonSource",
