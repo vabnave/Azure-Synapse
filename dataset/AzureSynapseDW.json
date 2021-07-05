@@ -5,7 +5,7 @@
 			"referenceName": "synapse-ws-203-WorkspaceDefaultSqlServer",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"DBName": "Customer DW"
+				"DBName": "SQLPool01"
 			}
 		},
 		"annotations": [],
@@ -13,7 +13,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "CustomerProfile"
+			"table": "CustomerProfileDW"
 		}
 	}
 }
