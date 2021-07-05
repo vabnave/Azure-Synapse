@@ -957,14 +957,17 @@
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "synapse-ws-203-WorkspaceDefaultSqlServer",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"DBName": "SQLPool01"
+					}
 				},
 				"annotations": [],
 				"type": "AzureSqlDWTable",
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "CustomerProfile"
+					"table": "CustomerProfileDW"
 				}
 			},
 			"dependsOn": [
