@@ -3,7 +3,10 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "synapse-ws-203-WorkspaceDefaultSqlServer",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"DBName": "Customer DW"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
