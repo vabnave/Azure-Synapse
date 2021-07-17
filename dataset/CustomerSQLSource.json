@@ -2,7 +2,7 @@
 	"name": "CustomerSQLSource",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlCustomerDatabase",
+			"referenceName": "AzureSqlDatabase",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
