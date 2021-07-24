@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlCustomerDatabase'"
 		},
+		"AzureSqlDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
+		},
 		"AzureSynapseDataLake_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureSynapseDataLake'"
@@ -40,6 +44,198 @@
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/CopyJSONtoSQL')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "adlsynapsecontainer/synapse/workspaces/synapse-ws-203/Stage/Customer Profile/Customer Profile.json"
+							},
+							{
+								"name": "Destination",
+								"value": "dbo.DimCustomer"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['CustomerID']"
+										},
+										"sink": {
+											"name": "CustomerID",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Title']"
+										},
+										"sink": {
+											"name": "Title",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['FirstName']"
+										},
+										"sink": {
+											"name": "FirstName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['MiddleName']"
+										},
+										"sink": {
+											"name": "MiddleName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['LastName']"
+										},
+										"sink": {
+											"name": "LastName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Suffix']"
+										},
+										"sink": {
+											"name": "Suffix",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CompanyName']"
+										},
+										"sink": {
+											"name": "CompanyName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SalesPerson']"
+										},
+										"sink": {
+											"name": "SalesPerson",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['EmailAddress']"
+										},
+										"sink": {
+											"name": "EmailAddress",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Phone']"
+										},
+										"sink": {
+											"name": "Phone",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['InsertedDate']"
+										},
+										"sink": {
+											"name": "InsertedDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ModifiedDate']"
+										},
+										"sink": {
+											"name": "ModifiedDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['HashKey']"
+										},
+										"sink": {
+											"name": "HashKey",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ADL_Customer_Store",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CustomerSQLSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ADL_Customer_Store')]",
+				"[concat(variables('workspaceId'), '/datasets/CustomerSQLSource')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/CopyTransactiontoAnalyticCDB')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
@@ -595,322 +791,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/copyPSVtoSQLPooltoCosmosDB')]",
-			"type": "Microsoft.Synapse/workspaces/pipelines",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"activities": [
-					{
-						"name": "copyPSVtoSQLPool",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "/Customer Source with Schema.csv"
-							},
-							{
-								"name": "Destination",
-								"value": "dbo.customer"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureFileStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "CustomerID",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "CustomerID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Title",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Title",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FirstName",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "FirstName",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "MiddleName",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "MiddleName",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LastName",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "LastName",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Suffix",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Suffix",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "CompanyName",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "CompanyName",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SalesPerson",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "SalesPerson",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "EmailAddress",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "EmailAddress",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Phone",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Phone",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "CustomerPSV",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "AzureSynapseAnalyticsCustomerTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "copySQLPooltoCosmosDB",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "copyPSVtoSQLPool",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "dbo.customer"
-							},
-							{
-								"name": "Destination",
-								"value": "OnlineCustomerProfile"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "SqlPoolSource"
-							},
-							"sink": {
-								"type": "CosmosDbSqlApiSink",
-								"writeBehavior": "insert"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "CustomerID"
-										},
-										"sink": {
-											"path": "$['customerid']"
-										}
-									},
-									{
-										"source": {
-											"name": "FirstName"
-										},
-										"sink": {
-											"path": "$['First Name']"
-										}
-									},
-									{
-										"source": {
-											"name": "MiddleName"
-										},
-										"sink": {
-											"path": "$['Middle Name']"
-										}
-									},
-									{
-										"source": {
-											"name": "LastName"
-										},
-										"sink": {
-											"path": "$['Last Name']"
-										}
-									},
-									{
-										"source": {
-											"name": "CompanyName"
-										},
-										"sink": {
-											"path": "$['Company Name']"
-										}
-									},
-									{
-										"source": {
-											"name": "EmailAddress"
-										},
-										"sink": {
-											"path": "$['email']"
-										}
-									},
-									{
-										"source": {
-											"name": "Phone"
-										},
-										"sink": {
-											"path": "$['Phone']"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "SqlPoolCustomerTable",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "CustomerProfileCDB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2021-07-04T19:36:07Z"
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/datasets/CustomerPSV')]",
-				"[concat(variables('workspaceId'), '/datasets/AzureSynapseAnalyticsCustomerTable1')]",
-				"[concat(variables('workspaceId'), '/datasets/SqlPoolCustomerTable')]",
-				"[concat(variables('workspaceId'), '/datasets/CustomerProfileCDB')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/ADL_Customer_Store')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
@@ -930,6 +810,74 @@
 					}
 				},
 				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AzureSynapseDataLake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ADL_temp_customer_profile')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseDataLake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "part-00000-c0cc786f-7adc-4f77-8746-570b5cb77bd8-c000.json",
+						"folderPath": "synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile",
+						"fileSystem": "adlsynapsecontainer"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CompanyName": {
+							"type": "string"
+						},
+						"CustomerID": {
+							"type": "integer"
+						},
+						"EmailAddress": {
+							"type": "string"
+						},
+						"FirstName": {
+							"type": "string"
+						},
+						"HashKey": {
+							"type": "string"
+						},
+						"InsertedDate": {
+							"type": "string"
+						},
+						"LastName": {
+							"type": "string"
+						},
+						"MiddleName": {
+							"type": "string"
+						},
+						"ModifiedDate": {
+							"type": "string"
+						},
+						"Phone": {
+							"type": "string"
+						},
+						"SalesPerson": {
+							"type": "string"
+						},
+						"Title": {
+							"type": "string"
+						},
+						"Suffix": {
+							"type": "string"
+						}
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/AzureSynapseDataLake')]"
@@ -1097,7 +1045,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureSqlCustomerDatabase",
+					"referenceName": "AzureSqlDatabase",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -1167,69 +1115,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/AzureSqlCustomerDatabase')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SqlPoolCustomerTable')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "SqlPoolTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "customer"
-				},
-				"sqlPool": {
-					"referenceName": "SQLPool01",
-					"type": "SqlPoolReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/sqlPools/SQLPool01')]"
+				"[concat(variables('workspaceId'), '/linkedServices/AzureSqlDatabase')]"
 			]
 		},
 		{
@@ -1241,6 +1127,25 @@
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureSqlCustomerDatabase_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AzureSqlDatabase')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase_connectionString')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -1427,10 +1332,8 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 4,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
@@ -1551,85 +1454,215 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQLPool01')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
-				"restorePointInTime": "0001-01-01T00:00:00",
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "norwayeast"
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/ADL_temp_customer_profile')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSynapseDataLake",
-					"type": "LinkedServiceReference"
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "Sparkpool01",
+					"type": "BigDataPoolReference"
 				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "part-00000-c0cc786f-7adc-4f77-8746-570b5cb77bd8-c000.json",
-						"folderPath": "synapse/workspaces/synapse-ws-203/Stage/temp/Customer Profile",
-						"fileSystem": "adlsynapsecontainer"
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2"
 					}
 				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"CompanyName": {
-							"type": "string"
+				"metadata": {
+					"saveOutput": true,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/dfdd1e1e-cc1c-4d58-9de5-fa4d6dca2b1a/resourceGroups/myDataEngineerResources/providers/Microsoft.Synapse/workspaces/synapse-ws-203/bigDataPools/Sparkpool01",
+						"name": "Sparkpool01",
+						"type": "Spark",
+						"endpoint": "https://synapse-ws-203.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/Sparkpool01",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
 						},
-						"CustomerID": {
-							"type": "integer"
+						"sparkVersion": "2.4",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {
+							"microsoft": {
+								"language": "python"
+							}
 						},
-						"EmailAddress": {
-							"type": "string"
+						"source": [
+							"%%pyspark\r\n",
+							"df = spark.read.load('abfss://adlsynapsecontainer@adlstoragesynapse203.dfs.core.windows.net/synapse/workspaces/synapse-ws-203/data/online-user-profile.json', format='json')\r\n",
+							"display(df.limit(10))"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"FirstName": {
-							"type": "string"
+						"source": [
+							"from pyspark.sql.functions import udf, explode\r\n",
+							"\r\n",
+							"flat=df.select('visitorId',explode('topProductPurchases').alias('topProductPurchases_flat'))\r\n",
+							"flat.show(100)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"HashKey": {
-							"type": "string"
+						"source": [
+							"topPurchases = (flat.select('visitorId','topProductPurchases_flat.productId','topProductPurchases_flat.itemsPurchasedLast12Months')\r\n",
+							"    .orderBy('visitorId'))\r\n",
+							"\r\n",
+							"topPurchases.show(100)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"InsertedDate": {
-							"type": "string"
+						"source": [
+							"# Let's order by the number of items purchased in the last 12 months\r\n",
+							"sortedTopPurchases = topPurchases.orderBy(\"itemsPurchasedLast12Months\")\r\n",
+							"\r\n",
+							"display(sortedTopPurchases.limit(100))"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"LastName": {
-							"type": "string"
+						"source": [
+							"sortedTopPurchases = (topPurchases\r\n",
+							"    .orderBy( col(\"itemsPurchasedLast12Months\").desc() ))\r\n",
+							"\r\n",
+							"display(sortedTopPurchases.limit(100))"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"MiddleName": {
-							"type": "string"
+						"source": [
+							"groupedTopPurchases = (sortedTopPurchases.select(\"visitorId\")\r\n",
+							"    .groupBy(\"visitorId\")\r\n",
+							"    .agg(count(\"*\").alias(\"total\"))\r\n",
+							"    .orderBy(\"visitorId\") )\r\n",
+							"\r\n",
+							"display(groupedTopPurchases.limit(100))"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"collapsed": true
 						},
-						"ModifiedDate": {
-							"type": "string"
-						},
-						"Phone": {
-							"type": "string"
-						},
-						"SalesPerson": {
-							"type": "string"
-						},
-						"Title": {
-							"type": "string"
-						},
-						"Suffix": {
-							"type": "string"
-						}
+						"source": [
+							"groupedTopPurchases = (sortedTopPurchases.select(\"visitorId\",\"itemsPurchasedLast12Months\")\r\n",
+							"    .groupBy(\"visitorId\")\r\n",
+							"    .agg(sum(\"itemsPurchasedLast12Months\").alias(\"totalItemsPurchased\"))\r\n",
+							"    .orderBy(\"visitorId\") )\r\n",
+							"\r\n",
+							"groupedTopPurchases.show(100)"
+						],
+						"outputs": [],
+						"execution_count": null
 					}
-				}
+				]
 			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/AzureSynapseDataLake')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

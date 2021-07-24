@@ -8,6 +8,9 @@
 		"AzureSqlCustomerDatabase_connectionString": {
 			"value": ""
 		},
+		"AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
 		"AzureSynapseDataLake_accountKey": {
 			"value": ""
 		},
