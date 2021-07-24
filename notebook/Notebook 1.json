@@ -58,7 +58,7 @@
 					"df = spark.read.load('abfss://adlsynapsecontainer@adlstoragesynapse203.dfs.core.windows.net/synapse/workspaces/synapse-ws-203/data/online-user-profile.json', format='json')\r\n",
 					"display(df.limit(10))"
 				],
-				"execution_count": 1
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
