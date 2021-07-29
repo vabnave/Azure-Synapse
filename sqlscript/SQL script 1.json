@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP(10) * \nFROM OPENROWSET('CosmosDB',\n                'Account=mycosmosdbsynapselink;Database=CustomerProfile;Key=SlkV9QjUKWfenBKpO0YaagM8E29lxMN9vNfAp0EfRWg61ejXXf9apRNRSxW8E7ux5A2hZBM0GQv7qHHsBSGGow=='\n                ,CustomerProfileHTAP) AS Customer",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"poolName": "Built-in",
+				"databaseName": "SynapseLinkDB"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

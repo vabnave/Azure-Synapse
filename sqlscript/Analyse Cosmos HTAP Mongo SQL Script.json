@@ -2,7 +2,7 @@
 	"name": "Analyse Cosmos HTAP Mongo SQL Script",
 	"properties": {
 		"content": {
-			"query": "CREATE DATABASE SynapseLinkDB\nGO\n\nUSE SynapseLinkDB\nGO\n\n\nSELECT TOP(10) * \nFROM OPENROWSET('CosmosDB',\n                'Account=adventurework-sql;\nDatabase=AdventureWorks;\nKey=pRm30NZbE879vZa…Euw=='\n                ,Customer) AS Customer",
+			"query": "CREATE DATABASE SynapseLinkDB\nGO\n\nUSE SynapseLinkDB\nGO\n\n\nSELECT TOP(10) * \nFROM OPENROWSET('CosmosDB',\n                'Account=mycosmosdbsynapselink;Database=CustomerProfile;Key=SlkV9QjUKWfenBKpO0YaagM8E29lxMN9vNfAp0EfRWg61ejXXf9apRNRSxW8E7ux5A2hZBM0GQv7qHHsBSGGow=='\n                ,CustomerProfileHTAP) AS Customer",
 			"metadata": {
 				"language": "sql"
 			},
