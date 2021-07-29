@@ -739,6 +739,95 @@
 					"SELECT COUNT(c.id) FROM c WHERE c.type = 'SalesOrderStatistic’"
 				],
 				"execution_count": null
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Read data from the transactional store\r\n",
+					""
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"dfCustomer = spark.read\\\r\n",
+					"    .format(\"cosmos.oltp\")\\\r\n",
+					"    .option(\"spark.synapse.linkedService\", \"AdventureWorksSQL\")\\\r\n",
+					"    .option(\"spark.cosmos.container\", \"Customer\")\\\r\n",
+					"    .load()\r\n",
+					"\r\n",
+					"display(dfCustomer.limit(10))"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": true
+				},
+				"source": [
+					"%%sql\r\n",
+					"CREATE TABLE CustomersOLTP USING cosmos.oltp OPTIONS (\r\n",
+					"    spark.synapse.linkedService 'AdventureWorksSQL',\r\n",
+					"    spark.cosmos.container 'Customer'\r\n",
+					")"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": true
+				},
+				"source": [
+					"%%sql\r\n",
+					"SELECT * FROM CustomersOLTP\r\n",
+					"LIMIT 10"
+				],
+				"execution_count": null
 			}
 		]
 	}
