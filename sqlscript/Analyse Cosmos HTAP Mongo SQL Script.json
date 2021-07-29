@@ -2,13 +2,13 @@
 	"name": "Analyse Cosmos HTAP Mongo SQL Script",
 	"properties": {
 		"content": {
-			"query": "",
+			"query": "CREATE DATABASE SynapseLinkDB\nGO\n\nUSE SynapseLinkDB\nGO\n\n\nSELECT TOP(10) * \nFROM OPENROWSET('CosmosDB',\n                'Account=adventurework-sql;\nDatabase=AdventureWorks;\nKey=pRm30NZbE879vZa…Euw=='\n                ,Customer) AS Customer",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
 				"poolName": "Built-in",
-				"databaseName": "master"
+				"databaseName": "SynapseLinkDB"
 			},
 			"resultLimit": 5000
 		},
