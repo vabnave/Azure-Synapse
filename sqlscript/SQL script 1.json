@@ -2,7 +2,7 @@
 	"name": "SQL script 1",
 	"properties": {
 		"content": {
-			"query": "SELECT TOP(10) * \nFROM OPENROWSET('CosmosDB',\n                'Account=mycosmosdbsynapselink;Database=CustomerProfile;Key=SlkV9QjUKWfenBKpO0YaagM8E29lxMN9vNfAp0EfRWg61ejXXf9apRNRSxW8E7ux5A2hZBM0GQv7qHHsBSGGow=='\n                ,CustomerProfileHTAP) AS Customer",
+			"query": "CREATE VIEW Customers\nAS\nSELECT *\n    FROM OPENROWSET('CosmosDB',\n                'Account=mycosmosdbsynapselink;Database=CustomerProfile;Key=SlkV9QjUKWfenBKpO0YaagM8E29lxMN9vNfAp0EfRWg61ejXXf9apRNRSxW8E7ux5A2hZBM0GQv7qHHsBSGGow=='\n                ,CustomerProfileHTAP) \n            WITH \n            (\n                    CustomerId varchar(max) '$.id',\n                    Title varchar(max) '$.title',\n                    FirstName varchar(max) '$.firstName',\n                    LastName varchar(max) '$.lastName',\n                    EmailAddress varchar(max) '$.emailAddress',\n                    PhoneNumber varchar(max) '$.phoneNumber',\n                    AddressLine1 varchar(max) '$.address.addressLine1',\n                    AddressLine2 varchar(max) '$.address.addressLine2',\n                    City varchar(max) '$.address.city',\n                    Country varchar(max) '$.address.country',\n                    ZipCode varchar(max) '$.address.zipCode'\n            )\n                    AS Customers;\n\n\n\nSELECT TOP(10) * FROM Customers",
 			"metadata": {
 				"language": "sql"
 			},
