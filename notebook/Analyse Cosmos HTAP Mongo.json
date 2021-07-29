@@ -28,6 +28,19 @@
 		},
 		"cells": [
 			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"https://docs.microsoft.com/en-us/learn/modules/query-azure-cosmos-db-with-apache-spark-for-azure-synapse-analytics/"
+				]
+			},
+			{
 				"cell_type": "code",
 				"source": [
 					"dfCustomer = spark.read\\\r\n",
